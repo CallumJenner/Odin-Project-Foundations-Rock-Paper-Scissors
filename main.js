@@ -24,45 +24,82 @@ function checkSelection(number) {
 
 function playerSelection() {
     let randomInt = randomIntBetweenNumbers(1, 3);
-    let playerSelection = prompt("Please type either Rock, Paper or Scissors: ");
+    let playerSelection = prompt("Please type either Rock, Paper or Scissors: ").toLowerCase();
     console.log(`You selected ${playerSelection}`);
     return playerSelection;
 }
 
 function checkWinner(computerSelection, playerSelection) {
+    let winner;
     if (computerSelection === playerSelection) {
         console.log(`It's a draw, you both selected ${computerSelection}`);
+        return winner = "draw";
     } else {
         switch (computerSelection) {
             case "rock":
                 if (playerSelection === "paper") {
                     console.log("You Win! Paper beats Rock!");
-                    break;
+                    return winner = "player";
                 } else if (playerSelection === "scissors") {
                     console.log("You Lose! Rock beats Scissors");
-                    break;
+                    return winner = "computer";
                 }
             case "paper":
                 if (playerSelection === "rock") {
                     console.log("You Lose! Paper beats Rock!");
-                    break;
+                    return winner = "computer";
                 } else if (playerSelection === "scissors") {
                     console.log("You Win! Scissors beats Paper");
-                    break;
+                    return winner = "player";
                 }
             case "scissors":
                 if (playerSelection === "rock") {
                     console.log("You Win! Scissors beats Rock!");
-                    break;
+                    return winner = "player";
                 } else if (playerSelection === "paper") {
                     console.log("You Lose! Scissors beats Paper");
-                    break;
+                    return winner = "computer";
                 }
         }
     }
 }
 
-let player = playerSelection();
-let computer = computerSelection();
+function game(numberOfRounds) {
+    let numberOfComputerWins = 0;
+    let numberOfPlayerWins = 0;
+    let numberOfDraws = 0;
 
-checkWinner(computer, player);
+    for (let i = 0; i < numberOfRounds; i++) {
+        let player = playerSelection();
+        let computer = computerSelection();
+
+        let winner = checkWinner(computer, player);
+
+        switch (winner) {
+            case "computer":
+                numberOfComputerWins++;
+                break;
+            case "player":
+                numberOfPlayerWins++;
+                break;
+            case "draw":
+                numberOfDraws++;
+                break;
+
+        }
+    }
+
+    if (numberOfComputerWins > numberOfPlayerWins) {
+        alert("You Lost!");
+    } else if (numberOfComputerWins < numberOfPlayerWins) {
+        alert("You Win!");
+    } else {
+        alert("It's a Draw!");
+    }
+
+    console.log(`Computer wins: ${numberOfComputerWins}`);
+    console.log(`Player wins: ${numberOfPlayerWins}`);
+    console.log(`Draws: ${numberOfDraws}`);
+}
+
+game(5);
