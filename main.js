@@ -4,7 +4,7 @@ function randomIntBetweenNumbers(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function computerSelection() {
+function cSelection() {
     let randomInt = randomIntBetweenNumbers(1, 3);
     let computerSelection = checkSelection(randomInt);
     console.log(`Computer selected ${computerSelection}`);
@@ -22,9 +22,26 @@ function checkSelection(number) {
     }
 }
 
-function playerSelection() {
+function pSelection() {
+    let validTerms = ["rock", "paper", "scissors"];
+
     let randomInt = randomIntBetweenNumbers(1, 3);
-    let playerSelection = prompt("Please type either Rock, Paper or Scissors: ").toLowerCase();
+
+    let playerSelection
+
+    let validInput = false;
+
+    while (validInput != true) {
+        playerSelection = prompt("Please type either Rock, Paper or Scissors: ").toLowerCase();
+        // To check if the input is valid.
+        if (!(validTerms.indexOf(playerSelection) > -1)) {
+            alert("Invalid Input, please enter either Rock, Paper or Scissors");
+        } else {
+            alert("Valid");
+            validInput = true;
+        }
+    }
+
     console.log(`You selected ${playerSelection}`);
     return playerSelection;
 }
@@ -70,8 +87,8 @@ function game(numberOfRounds) {
     let numberOfDraws = 0;
 
     for (let i = 0; i < numberOfRounds; i++) {
-        let player = playerSelection();
-        let computer = computerSelection();
+        let player = pSelection();
+        let computer = cSelection();
 
         let winner = checkWinner(computer, player);
 
