@@ -22,72 +22,65 @@ function checkSelection(number) {
     }
 }
 
-function pSelection() {
-    let validTerms = ["rock", "paper", "scissors"];
-
-    let randomInt = randomIntBetweenNumbers(1, 3);
-
-    let playerSelection
-
-    let validInput = false;
-
-    while (validInput != true) {
-        playerSelection = prompt("Please type either Rock, Paper or Scissors: ").toLowerCase();
-        // To check if the input is valid.
-        if (!(validTerms.indexOf(playerSelection) > -1)) {
-            alert("Invalid Input, please enter either Rock, Paper or Scissors");
-        } else {
-            alert("Valid");
-            validInput = true;
-        }
-    }
-
-    console.log(`You selected ${playerSelection}`);
-    return playerSelection;
-}
-
 function checkWinner(computerSelection, playerSelection) {
-    let winner;
+    let winner = "";
+
     if (computerSelection === playerSelection) {
-        console.log(`It's a draw, you both selected ${computerSelection}`);
-        return winner = "draw";
+        winner = "draw";
     } else {
         switch (computerSelection) {
             case "rock":
                 if (playerSelection === "paper") {
-                    console.log("You Win! Paper beats Rock!");
-                    return winner = "player";
+                    winner = "player";
                 } else if (playerSelection === "scissors") {
-                    console.log("You Lose! Rock beats Scissors");
-                    return winner = "computer";
+                    winner = "computer";
                 }
+                break;
             case "paper":
                 if (playerSelection === "rock") {
-                    console.log("You Lose! Paper beats Rock!");
-                    return winner = "computer";
+                    winner = "computer";
                 } else if (playerSelection === "scissors") {
-                    console.log("You Win! Scissors beats Paper");
-                    return winner = "player";
+                    winner = "player";
                 }
+                break;
             case "scissors":
                 if (playerSelection === "rock") {
-                    console.log("You Win! Scissors beats Rock!");
-                    return winner = "player";
+                    winner = "player";
                 } else if (playerSelection === "paper") {
-                    console.log("You Lose! Scissors beats Paper");
-                    return winner = "computer";
+                    winner = "computer";
                 }
+                break;
         }
     }
+
+    printWinner(winner, computerSelection, playerSelection);
+    return winner;
 }
 
-function game(numberOfRounds) {
+function printWinner(winner, computerSelection, playerSelection) {
+    const winnerNode = document.createElement("p");
+    let text;
+
+    if (winner === "player") {
+        text = document.createTextNode(`You Win! ${playerSelection} beats ${computerSelection}`)
+    } else if (winner === "computer") {
+        text = document.createTextNode(`You Lose! ${computerSelection} beats ${playerSelection}`)
+    } else if (winner === "draw") {
+        text = document.createTextNode(`It's a draw, you both selected ${computerSelection}`);
+    }
+
+    winnerNode.appendChild(text);
+    let element = document.getElementById("round-winner");
+    element.appendChild(winnerNode);
+}
+
+function game(numberOfRounds, pSelection) {
     let numberOfComputerWins = 0;
     let numberOfPlayerWins = 0;
     let numberOfDraws = 0;
 
     for (let i = 0; i < numberOfRounds; i++) {
-        let player = pSelection();
+        let player = pSelection;
         let computer = cSelection();
 
         let winner = checkWinner(computer, player);
@@ -106,17 +99,35 @@ function game(numberOfRounds) {
         }
     }
 
-    if (numberOfComputerWins > numberOfPlayerWins) {
-        alert("You Lost!");
-    } else if (numberOfComputerWins < numberOfPlayerWins) {
-        alert("You Win!");
-    } else {
-        alert("It's a Draw!");
-    }
-
     console.log(`Computer wins: ${numberOfComputerWins}`);
     console.log(`Player wins: ${numberOfPlayerWins}`);
     console.log(`Draws: ${numberOfDraws}`);
 }
 
-game(5);
+
+const btns = document.getElementsByClassName("btn");
+
+const roundWinner = document.getElementById("round-winner")
+
+
+for (i of btns) {
+    let selectedButton;
+    i.addEventListener('click', (e) => {
+        roundWinner.innerHTML = ""; // To reset text every time a button is clicked
+        switch (e.target.id) {
+            case "rock-btn":
+                selectedButton = "rock"
+                console.log("111 rock")
+                break;
+            case "paper-btn":
+                selectedButton = "paper";
+                console.log("paper");
+                break;
+            case "scissors-btn":
+                selectedButton = "scissors";
+                break;
+        }
+
+        game(1, selectedButton);
+    })
+}
