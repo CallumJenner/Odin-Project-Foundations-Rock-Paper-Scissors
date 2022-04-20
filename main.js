@@ -75,10 +75,7 @@ function printWinner(winner, computerSelection, playerSelection) {
 }
 
 function game(numberOfRounds, pSelection) {
-    let numberOfComputerWins = 0;
-    let numberOfPlayerWins = 0;
-    let numberOfDraws = 0;
-
+    currentScore.innerHTML = "";
     for (let i = 0; i < numberOfRounds; i++) {
         let player = pSelection;
         let computer = cSelection();
@@ -97,6 +94,39 @@ function game(numberOfRounds, pSelection) {
                 break;
 
         }
+
+        // Below is messy and will need to be refactored.
+        const scoreNode = document.createElement('p');
+        let text;
+        if (numberOfPlayerWins === 5) {
+            text = document.createTextNode(`You WIN!`);
+            scoreNode.appendChild(text);
+            text = document.createElement("br");
+            scoreNode.appendChild(text);
+            text = document.createTextNode(`To play a new round, just click on one of the buttons!`);
+            scoreNode.appendChild(text);
+            gameReset();
+        } else if (numberOfComputerWins === 5) {
+            text = document.createTextNode(`Computer Wins :(`);
+            scoreNode.appendChild(text);
+            text = document.createElement("br");
+            scoreNode.appendChild(text);
+            text = document.createTextNode(`To play a new round, just click on one of the buttons!`);
+            scoreNode.appendChild(text);
+            gameReset();
+        } else {
+            text = document.createTextNode(`You: ${numberOfPlayerWins}`);
+            scoreNode.appendChild(text);
+            text = document.createElement("br");
+            scoreNode.appendChild(text);
+            text = document.createTextNode(`Computer: ${numberOfComputerWins}`);
+            scoreNode.appendChild(text);
+            text = document.createElement("br");
+            scoreNode.appendChild(text);
+            text = document.createTextNode(`Draws: ${numberOfDraws}`);
+            scoreNode.appendChild(text);
+        }
+        currentScore.appendChild(scoreNode);
     }
 
     console.log(`Computer wins: ${numberOfComputerWins}`);
@@ -104,10 +134,22 @@ function game(numberOfRounds, pSelection) {
     console.log(`Draws: ${numberOfDraws}`);
 }
 
+function gameReset() {
+    numberOfComputerWins = 0;
+    numberOfPlayerWins = 0;
+    numberOfDraws = 0;
+}
+
 
 const btns = document.getElementsByClassName("btn");
 
 const roundWinner = document.getElementById("round-winner")
+
+const currentScore = document.getElementById('current-score')
+
+let numberOfComputerWins = 0;
+let numberOfPlayerWins = 0;
+let numberOfDraws = 0;
 
 
 for (i of btns) {
